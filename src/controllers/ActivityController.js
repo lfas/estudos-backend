@@ -1,19 +1,17 @@
-const { Theme, Activity } = require('../models/Subject');
+const { Subject, Activity } = require('../models/Subject');
 
 //Controller de Temas
 module.exports = {
 	async store(req, res) {
-		const { themeId: theme_id } = req.params;
-		const { class_number } = req.headers;
-		const { page } = req.headers;
+		const { subjectId: subject_id } = req.params;
+		const { theme } = req.headers;
 
-		const targetTheme = await Theme.findById(theme_id);
+		const targetSubject = await Subject.findById(subject_id);
 
 		const activityExists = await Activity.findOne({ 
 			$and: [
-				{ theme_id: targetTheme._id },
-				{ class_number },
-				{ page }
+				{ subject_id: targetSubject._id },
+				{ theme }
 			]
 		}); 
 
@@ -22,13 +20,12 @@ module.exports = {
 		};
 
 		const activiyCreated = await Activity.create({
-			theme_id,
-      class_number,
-      page
+			subject_id,
+      theme
 		});
 
-		targetTheme.activities.push(activiyCreated);
-		await targetTheme.save();
+		targetSubject.activities.push(activiyCreated);
+		await targetSubject.save();
 
 		return res.json(activiyCreated);
 	},
@@ -43,25 +40,15 @@ module.exports = {
 		const targetActivity = await Activity.findById(activity_id);
 
 		switch(activity_type) {
-			case 'ad':
-				targetActivity.ad = activity_value;
+			case 'es':
+				targetActivity.es = activity_value;
 				await targetActivity.save();
 
 				break;
-			case 'tm':
-				targetActivity.tm = activity_value;
+			case 'ec':
+				targetActivity.ec = activity_value;
 				await targetActivity.save();
-
-				break;
-			case 'tc':
-				targetActivity.tc = activity_value;
-				await targetActivity.save();
-
-				break;
-			case 'td':
-				targetActivity.td = activity_value;
-				await targetActivity.save();
-
+				
 				break;
 		}	
 

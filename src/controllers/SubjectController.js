@@ -20,16 +20,8 @@ module.exports = {
 
 		const subjects = await Subject.find({ student_id: loggedStudent._id })
 			.populate({
-				path: 'books',
-				model: 'Book',
-				populate: {
-					path: 'themes',
-					model: 'Theme',
-					populate: {
-						path: 'activities',
-						model: 'Activity'
-					}
-				}		
+				path: 'activities',
+				model: 'Activity'	
 			});
 
 		return res.json(subjects);
