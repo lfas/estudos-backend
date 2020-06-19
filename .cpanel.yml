@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/jbuscaco/public_html/estudos-backend
+    - /bin/cp -R public $DEPLOYPATH
